@@ -20,6 +20,7 @@ distclean:
 
 .PHONY: setup
 setup:
+	python -m pip install -U pip setuptools
 	python -m pip install -Ur requirements-dev.txt
 	python -m pip install -Ur requirements.txt
 	python -m pip install -e .

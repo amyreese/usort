@@ -28,6 +28,7 @@ setup:
 .PHONY: test
 test:
 	python -m coverage run -m usort.tests $(TESTOPTS)
+	python -m coverage combine
 	python -m coverage report
 	python -m mypy --strict usort --install-types --non-interactive
 

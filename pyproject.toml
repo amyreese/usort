@@ -43,6 +43,7 @@ Homepage="https://usort.readthedocs.io"
 
 [tool.coverage.run]
 branch = true
+parallel = true
 include = ["usort/*"]
 omit = ["usort/tests/*"]
 
@@ -60,6 +61,30 @@ packages = ["usort"]
 
 [tool.setuptools_scm]
 write_to = "usort/version.py"
+
+[tool.thx]
+default = ["format", "docs", "test", "lint", "coverage"]
+python_versions = ["3.6", "3.7", "3.8", "3.9", "3.10"]
+watch_paths = ["docs", "usort"]
+module = "usort"
+srcs = "usort"
+
+[tool.thx.jobs]
+combine = {run="python -m coverage combine", once=true, requires="test"}
+coverage = {run="python -m coverage report", once=true, requires="combine", show_output=true}
+deps = "python -m pessimist --requirements= -c 'python -m usort --help' ."
+docs = {run="sphinx-build -b html docs html", once=true}
+format = {run="python -m ufmt format {srcs}", once=true}
+test = "python -m coverage run -m {module}.tests"
+
+[tool.thx.jobs.lint]
+run = [
+    "python -m mypy --strict {module} --install-types --non-interactive",
+    "python -m flake8 {srcs}",
+    "python -m ufmt check {srcs}",
+    "bash check_copyright.sh",
+]
+parallel = true
 
 [tool.tox]
 legacy_tox_ini = """

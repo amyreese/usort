@@ -60,3 +60,17 @@ packages = ["usort"]
 
 [tool.setuptools_scm]
 write_to = "usort/version.py"
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+envlist = py36, py37, py38
+
+[testenv]
+deps = -rrequirements-dev.txt
+whitelist_externals = make
+commands =
+    make test
+setenv =
+    py{36,37,38}: COVERAGE_FILE={envdir}/.coverage
+"""
